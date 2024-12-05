@@ -1,0 +1,16 @@
+apiVersion: v1
+entries:
+  empty:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-12-05T18:44:27.296169688Z"
+    description: an empty chart...
+    digest: 10b906176f98b97c0cb9c18c95690558828185774ba3a41327cdd44f619672d2
+    keywords:
+    - empty
+    name: empty
+    type: application
+    urls:
+    - https://github.com/dbones-labs/maps/releases/download/empty-1.0.0/empty-1.0.0.tgz
+    version: 1.0.0
+generated: "2024-12-05T18:44:27.296174627Z"

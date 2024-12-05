@@ -5,7 +5,7 @@ on:
       - main
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: $\{\{ github.repository }}
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   build:
@@ -24,9 +24,9 @@ jobs:
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
-          registry: $\{\{ env.REGISTRY }}
-          username: $\{\{ github.actor }}
-          password: $\{\{ secrets.GITHUB_TOKEN }}
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and Push Docker image to GitHub Container Registry
         uses: docker/build-push-action@v6
@@ -34,16 +34,16 @@ jobs:
           context: .
           push: true
           tags: |
-            $\{\{ env.REGISTRY }}/$\{\{ env.IMAGE_NAME }}:latest
-            $\{\{ env.REGISTRY }}/$\{\{ env.IMAGE_NAME }}:$\{\{ github.sha }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
       
       - name: Install YQ
         uses: dcarbone/install-yq-action@v1.2.0
             
       - name: Update values.yaml with Latest Image Tag
         run: |
-          yq eval --inplace ".image.repository = \"$\{\{ env.REGISTRY }}/$\{\{ env.IMAGE_NAME }}\"" charts/python-api/values.yaml
-          yq eval --inplace ".image.tag = \"$\{\{ github.sha }}\"" charts/python-api/values.yaml
+          yq eval --inplace ".image.repository = \"${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}\"" charts/python-api/values.yaml
+          yq eval --inplace ".image.tag = \"${{ github.sha }}\"" charts/python-api/values.yaml
     
       - name: Configure Git
         run: |
@@ -58,4 +58,4 @@ jobs:
       - name: Run chart-releaser to Package and Release Helm Charts
         uses: helm/chart-releaser-action@v1.6.0
         env:
-          CR_TOKEN: $\{\{ secrets.GITHUB_TOKEN }}
+          CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
